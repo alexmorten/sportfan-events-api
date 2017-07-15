@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   enum status:[:normal,:verified,:admin]
   acts_as_mappable
+  has_many :groups, as: :groupable
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
           :recoverable, :rememberable, :trackable, :validatable,

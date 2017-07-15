@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  resources :users, except:[:create,:destroy]
   resources :events
+  resources :groups, except: :create do
+    resources :groups, module: 'groups',except: [:show,:update,:destroy]
+  end
+  resources :users, except:[:create,:destroy] do
+    resources :groups, module: 'users',except: [:show,:update,:destroy]
+  end
+
 
   mount_devise_token_auth_for 'User' , at: 'auth'
 
