@@ -39,7 +39,7 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration
       t.string :image
       t.string :email
       t.text :description
-      t.integer :status
+      t.integer :status, default: 0
       t.string :website
 
       t.float :lat

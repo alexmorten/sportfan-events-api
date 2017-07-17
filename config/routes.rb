@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :users, except:[:create,:destroy] do
     resources :groups, module: 'users',except: [:show,:update,:destroy]
   end
-
+  get 'me',to: 'misc#me'
 
   mount_devise_token_auth_for 'User' , at: 'auth'
 
