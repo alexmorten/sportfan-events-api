@@ -1,10 +1,6 @@
 class Groups::EventsController < EventsController
   before_action :set_group_events
-    def index
-      @events = @group.events
-
-      render json: @events
-    end
+  
 
     private
         def set_group_events

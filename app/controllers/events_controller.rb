@@ -58,7 +58,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:title, :description, :lat, :lng, :date)
+      params.require(:event).permit(:title, :description, :lat, :lng, :date,:group_id)
     end
     def check_create_rights
       if @current_user.status == "normal"

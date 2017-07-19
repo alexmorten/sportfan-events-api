@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: :update
   # GET /users
   def index
-    @users = User.all
+    @users = User.where(status:"verified")
 
     render json: @users
   end
