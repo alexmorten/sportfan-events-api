@@ -3,8 +3,11 @@ class GroupsController < ApplicationController
   before_action :authenticate_user!, only:[:create,:update,:destroy]
   # GET /groups
   def index
-    @groups = Group.all
-
+    if @groupable
+      @groups = @groupable.groups
+    else
+      @groups = Group.all
+    end
     render json: @groups
   end
 
@@ -15,6 +18,7 @@ class GroupsController < ApplicationController
 
   # POST /groups
   def create
+    check_create_rights
     @group = @groupable.groups.new(group_params)
     @group.user = @current_user
     if @group.save
@@ -26,6 +30,7 @@ class GroupsController < ApplicationController
 
   # PATCH/PUT /groups/1
   def update
+    check_access_rights
     if @group.update(group_params)
       render json: @group
     else
@@ -35,6 +40,7 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1
   def destroy
+    check_access_rights
     @group.destroy
   end
 
@@ -47,5 +53,15 @@ class GroupsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def group_params
       params.require(:group).permit(:name, :description)
+    end
+    def check_create_rights
+      if @current_user.status == "normal"
+        render json: {error: "you need to be verified"},status:401
+      end
+    end
+    def check_access_rights
+      if !(@group.user == @current_user || @current_user.status == "admin")
+        render json: { error:"not allowed" }, status: 401
+      end
     end
 end

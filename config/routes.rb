@@ -2,9 +2,11 @@ Rails.application.routes.draw do
   resources :events
   resources :groups, except: :create do
     resources :groups, module: 'groups',except: [:show,:update,:destroy]
+    resources :events, module: 'groups',only: :index
   end
   resources :users, except:[:create,:destroy] do
     resources :groups, module: 'users',except: [:show,:update,:destroy]
+    resources :events, module: 'users',only: :index
   end
   get 'me',to: 'misc#me'
 

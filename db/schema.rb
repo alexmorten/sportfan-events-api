@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20170715104505) do
     t.string   "image"
     t.string   "email"
     t.text     "description"
-    t.integer  "status"
+    t.integer  "status",                 default: 0
     t.string   "website"
     t.float    "lat"
     t.float    "lng"
