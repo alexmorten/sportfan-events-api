@@ -6,6 +6,10 @@ class EventsController < ApplicationController
     limit = params[:limit] && params[:limit].to_i <=1000 ? params[:limit] : 20
     lat = params[:lat]
     lng = params[:lng]
+    include_past_events = params[:include_past] || false
+    exclude_future_events = params[:exclude_future] || false
+    startDate = params[:startDate] || nil
+    endDate = params[:endDate] || nil
     dist = params[:dist]
     query = params[:query] ? params[:query] : ""
     if @group_events
@@ -13,6 +17,33 @@ class EventsController < ApplicationController
     else
       @events = Event.all
     end
+
+    @events = @events.where("LOWER(title) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)","%#{query}%","%#{query}%")
+
+    # if !include_past_events
+    #  @events = @events.where("date > ?",Time.now)
+    # end
+    if startDate && endDate
+      @events = @events.where("date > ? AND date < ? ",Time.at(startDate.to_i),Time.at(endDate.to_i))
+    elsif exclude_future_events
+      @events = @events.where("date < ?",Time.now)
+    elsif !include_past_events
+      @events = @events.where("date > ?",Time.now)
+    end
+
+    if lat && lng && dist
+      @events = @events.within(dist, :origin => [lat,lng])
+                   .order(date: :asc)
+                   .limit(limit)
+    elsif lat && lng
+      @events = @events.by_distance(:origin => [lat,lng])
+                   .limit(limit)
+    else
+      @events = @events.order(date: :asc)
+                   .limit(limit)
+    end
+
+
 
     render json: @events,lat:lat,lng:lng
   end
