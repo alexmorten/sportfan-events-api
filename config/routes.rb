@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :links
+  resources :tags
   resources :events
   resources :groups, except: :create do
     resources :groups, module: 'groups',except: [:show,:update,:destroy]

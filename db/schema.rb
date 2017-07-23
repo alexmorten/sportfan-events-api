@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170715104505) do
+ActiveRecord::Schema.define(version: 20170723211319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,23 @@ ActiveRecord::Schema.define(version: 20170715104505) do
     t.datetime "updated_at",     null: false
     t.integer  "user_id"
     t.index ["user_id"], name: "index_groups_on_user_id", using: :btree
+  end
+
+  create_table "links", force: :cascade do |t|
+    t.integer  "event_id"
+    t.integer  "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_links_on_event_id", using: :btree
+    t.index ["tag_id"], name: "index_links_on_tag_id", using: :btree
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -73,4 +90,7 @@ ActiveRecord::Schema.define(version: 20170715104505) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
   end
 
+  add_foreign_key "links", "events"
+  add_foreign_key "links", "tags"
+  add_foreign_key "tags", "users"
 end
