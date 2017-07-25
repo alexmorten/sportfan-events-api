@@ -2,6 +2,7 @@ class EventSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :lat, :lng, :date, :dist
   belongs_to :user
   belongs_to :group
+  has_many :tags
   def dist
     lat = instance_options[:lat]
     lng = instance_options[:lng]

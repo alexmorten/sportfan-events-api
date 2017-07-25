@@ -1,10 +1,13 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :update, :destroy]
-  before_action :authenticate_user , only: [:create,:update,:destroy]
+  before_action :authenticate_user! , only: [:create,:update,:destroy]
 
   # GET /tags
   def index
-    @tags = Tag.all
+    query = params[:query] || ""
+    limit = params[:limit] && params[:limit].to_i <=1000 ? params[:limit] : 20
+
+    @tags = Tag.where("LOWER(name) LIKE LOWER(?)","%#{query}%").limit(limit)
 
     render json: @tags
   end

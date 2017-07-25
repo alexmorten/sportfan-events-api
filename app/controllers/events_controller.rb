@@ -11,7 +11,7 @@ class EventsController < ApplicationController
     startDate = params[:startDate] || nil
     endDate = params[:endDate] || nil
     dist = params[:dist]
-    query = params[:query] ? params[:query] : ""
+    query = params[:query] || ""
     if @group_events
       @events = @group_events
     else
