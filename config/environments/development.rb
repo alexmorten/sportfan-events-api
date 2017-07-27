@@ -53,7 +53,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
   address: "localhost",
   port: 1025,
-  domain: "diswebtion-api.herokuapp.com",
+  domain: "sportfan-events-api.herokuapp.com",
   authentication: "plain",
   enable_starttls_auto: true,
   user_name: ENV["GMAIL_USERNAME"],
