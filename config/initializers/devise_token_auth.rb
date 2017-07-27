@@ -29,8 +29,8 @@ DeviseTokenAuth.setup do |config|
   # attribute updates. Set it to :password if you want it to be checked only if
   # password is updated.
   # config.check_current_password_before_update = :attributes
-  #config.default_confirm_success_url = "https://foody-ui.herokuapp.com/login"
-  config.default_confirm_success_url = "http://localhost:3005/login"
+  config.default_confirm_success_url = "https://sportfan-events-ui.herokuapp.com/login"
+  #config.default_confirm_success_url = "http://localhost:3005/login"
   # By default we will use callbacks for single omniauth.
   # It depends on fields like email, provider and uid.
   # config.default_callbacks = true
