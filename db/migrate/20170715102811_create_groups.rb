@@ -1,10 +1,10 @@
 class CreateGroups < ActiveRecord::Migration[5.0]
   def change
-    create_table :groups do |t|
+    create_table :groups, id: :uuid do|t|
       t.string :name
       t.text :description
       t.string :groupable_type
-      t.integer :groupable_id
+      t.uuid :groupable_id
 
       t.timestamps
     end

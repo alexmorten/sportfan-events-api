@@ -14,8 +14,9 @@ ActiveRecord::Schema.define(version: 20170723211319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
-  create_table "events", force: :cascade do |t|
+  create_table "events", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "title"
     t.text     "description"
     t.float    "lat"
@@ -23,26 +24,26 @@ ActiveRecord::Schema.define(version: 20170723211319) do
     t.datetime "date"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.integer  "user_id"
-    t.integer  "group_id"
+    t.uuid     "user_id"
+    t.uuid     "group_id"
     t.index ["group_id"], name: "index_events_on_group_id", using: :btree
     t.index ["user_id"], name: "index_events_on_user_id", using: :btree
   end
 
-  create_table "groups", force: :cascade do |t|
+  create_table "groups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "name"
     t.text     "description"
     t.string   "groupable_type"
-    t.integer  "groupable_id"
+    t.uuid     "groupable_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.integer  "user_id"
+    t.uuid     "user_id"
     t.index ["user_id"], name: "index_groups_on_user_id", using: :btree
   end
 
-  create_table "links", force: :cascade do |t|
-    t.integer  "event_id"
-    t.integer  "tag_id"
+  create_table "links", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "event_id"
+    t.uuid     "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id", "tag_id"], name: "index_links_on_event_id_and_tag_id", unique: true, using: :btree
@@ -50,8 +51,8 @@ ActiveRecord::Schema.define(version: 20170723211319) do
     t.index ["tag_id"], name: "index_links_on_tag_id", using: :btree
   end
 
-  create_table "tags", force: :cascade do |t|
-    t.integer  "user_id"
+  create_table "tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "user_id"
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -59,7 +60,7 @@ ActiveRecord::Schema.define(version: 20170723211319) do
     t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "provider",               default: "email", null: false
     t.string   "uid",                    default: "",      null: false
     t.string   "encrypted_password",     default: "",      null: false
