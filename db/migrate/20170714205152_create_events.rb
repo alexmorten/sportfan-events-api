@@ -1,6 +1,6 @@
 class CreateEvents < ActiveRecord::Migration[5.0]
   def change
-    create_table :events do |t|
+    create_table :events, id: :uuid do |t|
       t.string :title
       t.text :description
       t.float :lat
