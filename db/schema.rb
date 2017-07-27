@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170723211319) do
     t.integer  "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["event_id", "tag_id"], name: "index_links_on_event_id_and_tag_id", unique: true, using: :btree
     t.index ["event_id"], name: "index_links_on_event_id", using: :btree
     t.index ["tag_id"], name: "index_links_on_tag_id", using: :btree
   end
@@ -54,6 +55,7 @@ ActiveRecord::Schema.define(version: 20170723211319) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true, using: :btree
     t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
   end
 
