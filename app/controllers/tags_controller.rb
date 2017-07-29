@@ -21,7 +21,7 @@ class TagsController < ApplicationController
   def create
     check_create_rights
     @tag = Tag.new(tag_params)
-
+    @tag.user = @current_user
     if @tag.save
       render json: @tag, status: :created, location: @tag
     else
