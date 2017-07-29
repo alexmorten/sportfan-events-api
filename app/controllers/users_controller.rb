@@ -3,7 +3,13 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, only: :update
   # GET /users
   def index
-    @users = User.where(status:"verified")
+    limit = params[:limit] && params[:limit].to_i <=1000 ? params[:limit] : 20
+    query = params[:query] || ""
+    status = "verified"
+    if user_signed_in? && current_user.status == "admin" && params[:status]
+      status = params[:status]
+    end
+    @users = User.where(status:status).limit(limit).where('LOWER(name) LIKE LOWER(?)',"%#{query}%")
 
     render json: @users
   end
