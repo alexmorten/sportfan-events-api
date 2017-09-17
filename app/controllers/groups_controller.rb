@@ -18,7 +18,6 @@ class GroupsController < ApplicationController
 
   # POST /groups
   def create
-    check_create_rights
     @group = @groupable.groups.new(group_params)
     @group.user = @current_user
     if @group.save
@@ -30,7 +29,9 @@ class GroupsController < ApplicationController
 
   # PATCH/PUT /groups/1
   def update
-    check_access_rights
+    if check_access_rights
+      return
+    end
     if @group.update(group_params)
       render json: @group
     else
@@ -40,7 +41,9 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1
   def destroy
-    check_access_rights
+    if check_access_rights
+      return
+    end
     @group.destroy
   end
 
@@ -57,11 +60,13 @@ class GroupsController < ApplicationController
     def check_create_rights
       if @current_user.status == "normal"
         render json: {error: "you need to be verified"},status:401
+        return true
       end
     end
     def check_access_rights
       if !(@group.user == @current_user || @current_user.status == "admin")
         render json: { error:"not allowed" }, status: 401
+        return true
       end
     end
 end
